@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Indian Captaincy Eras: Dhoni, Kohli & Rohit</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{--ink:#0d1326;--ink2:#161d36;--paper:#fff;--mist:#f3f5fa;--line:#e3e7f0;--text:#1b2238;--muted:#5b6479;
+--dh:#f5a524;--ko:#ff5a5f;--ro:#1fc79a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:#fff;color:var(--text);font-family:'DM Sans',system-ui,sans-serif;font-size:1.0625rem;line-height:1.65}
+h1,h2,h3,.disp{font-family:'Bricolage Grotesque','DM Sans',sans-serif;letter-spacing:-.02em;line-height:1.08}
+.wrap{max-width:1180px;margin:0 auto;padding:0 clamp(1rem,4vw,2rem)}
+.dark{background:var(--ink);color:#e8ecf7}
+.dark .muted{color:#a9b3cc}.muted{color:var(--muted)}
+.sec{padding:clamp(3rem,7vw,5.5rem) 0}
+.wave{display:block;width:100%;height:clamp(32px,5vw,70px)}
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(13,19,38,.82);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08)}
+.prog{position:absolute;left:0;bottom:-1px;height:2px;width:0;background:linear-gradient(90deg,var(--dh),var(--ko),var(--ro))}
+.brand{display:flex;align-items:center;gap:.65rem;color:#fff;font-weight:700;font-size:1.1rem}
+.mark{width:2.3rem;height:2.3rem;display:grid;place-items:center;border-radius:.75rem;background:linear-gradient(135deg,var(--dh),var(--ko));font-size:1.15rem}
+.links{display:none;gap:.2rem;padding:.3rem;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.links a,.menu a{color:#c9d1e6;font-size:.95rem;font-weight:500;padding:.4rem 1.05rem;border-radius:999px;transition:background .25s,color .25s}
+.links a:hover,.menu a:hover{color:#fff}
+.links a.on,.menu a.on{background:#fff;color:var(--ink);font-weight:700}
+nav a:focus-visible,.burger:focus-visible{outline:2px solid var(--dh);outline-offset:2px}
+.done{display:none;align-items:center;gap:.4rem;font-size:.85rem;font-weight:700;color:#3be0b4;background:rgba(31,199,154,.14);padding:.35rem .8rem;border-radius:999px}
+.cta{display:none;background:var(--dh);color:var(--ink);font-weight:700;padding:.5rem 1.1rem;border-radius:999px;font-size:.95rem;transition:transform .2s}
+.cta:hover{transform:translateY(-1px)}
+.burger{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;width:2.5rem;height:2.5rem;border-radius:.8rem;font-size:1.2rem;cursor:pointer}
+.menu{display:flex;flex-direction:column;gap:.2rem;padding:.4rem clamp(1rem,4vw,2rem) 1rem}
+.menu[hidden]{display:none}
+@media(min-width:768px){.links{display:flex}.cta{display:inline-flex}.menu,.burger{display:none!important}}
+@media(min-width:1024px){.done{display:inline-flex}}
+.tlr{display:grid;grid-template-columns:4.2rem 1fr auto;align-items:center;gap:.8rem;margin-top:.7rem;font-size:.95rem}
+.tlt{position:relative;height:14px}
+.ok{color:#3be0b4;font-weight:700;font-size:.85rem}
+.h2{font-size:clamp(1.8rem,4vw,2.9rem);font-weight:700}
+.lead{max-width:62ch;font-size:clamp(1.05rem,1.6vw,1.2rem)}
+.chip{display:inline-block;font-size:.85rem;font-weight:700;padding:.2rem .7rem;border-radius:999px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(1rem,2vw,1.5rem)}
+.glass{background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.12);border-radius:1.75rem;padding:1.6rem}
+.track{height:10px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden}
+.fill{height:100%;width:0;border-radius:99px;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.panel{background:var(--mist);border-radius:1.75rem;padding:clamp(1.2rem,3vw,2rem)}
+.dpanel{background:var(--ink2);border:1px solid rgba(255,255,255,.08);border-radius:1.75rem;padding:clamp(1rem,2.5vw,1.6rem)}
+.chart{position:relative;height:clamp(280px,42vw,380px)}
+.tabs{display:inline-flex;gap:.25rem;background:var(--mist);padding:.3rem;border-radius:999px;border:1px solid var(--line)}
+.tabs button{border:0;background:none;font:inherit;font-weight:700;font-size:.95rem;padding:.5rem 1.1rem;border-radius:999px;color:var(--muted);cursor:pointer;transition:all .25s}
+.tabs button[aria-pressed=true]{background:var(--ink);color:#fff}
+.tabs button:focus-visible{outline:2px solid var(--dh);outline-offset:2px}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:1.25rem}
+table{width:100%;border-collapse:collapse;min-width:760px;font-size:1rem}
+th{background:var(--ink);color:#fff;text-align:left;padding:.9rem 1rem;font-size:.9rem;white-space:nowrap}
+td{padding:.85rem 1rem;border-top:1px solid var(--line)}
+tbody tr:hover{background:var(--mist)}
+tbody tr{animation:rowin .35s ease both}
+@keyframes rowin{from{opacity:0;transform:translateY(6px)}}
+.pill{display:inline-flex;align-items:center;gap:.4rem;font-weight:700;font-size:.9rem}
+.dot{width:.7rem;height:.7rem;border-radius:50%;display:inline-block}
+.era{border:1px solid var(--line);border-radius:1.75rem;padding:1.6rem;display:flex;flex-direction:column;justify-content:space-between;gap:1.2rem;border-top-width:6px}
+.era li{margin-bottom:.8rem}
+.fact{border-left:4px solid var(--ink);padding:.2rem 0 .2rem 1rem}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.fill{transition:none}tbody tr{animation:none}}
+</style>
+</head>
+<body>
+
+<nav class="top" aria-label="Main">
+  <div class="wrap flex items-center justify-between h-16 gap-4">
+    <a href="#eras" class="brand"><span class="mark" aria-hidden="true">🏏</span><span class="disp">Captaincy Archives</span></a>
+    <div class="links"><a href="#eras" data-s="eras">Eras</a><a href="#matrix" data-s="matrix">Data matrix</a><a href="#charts" data-s="charts">Charts</a><a href="#tactics" data-s="tactics">Tactics</a></div>
+    <div class="flex items-center gap-3">
+      <span class="done">✓ Tenures completed</span>
+      <a href="#matrix" class="cta">Open data matrix</a>
+      <button class="burger" id="burger" aria-expanded="false" aria-controls="menu" aria-label="Open menu">☰</button>
+    </div>
+  </div>
+  <div id="menu" class="menu" hidden><a href="#eras" data-s="eras">Eras</a><a href="#matrix" data-s="matrix">Data matrix</a><a href="#charts" data-s="charts">Charts</a><a href="#tactics" data-s="tactics">Tactics</a></div>
+  <div class="prog" id="prog"></div>
+</nav>
+
+<!-- DARK: hero -->
+<header class="dark" id="eras">
+  <div class="wrap sec" style="padding-bottom:2.5rem">
+    <div class="flex flex-wrap gap-2"><span class="chip" style="background:rgba(31,199,154,.16);color:#3be0b4">✓ All three tenures completed</span><span class="chip" style="background:rgba(245,165,36,.16);color:var(--dh)">Tests · ODIs · T20Is</span></div>
+    <h1 class="mt-5 font-bold" style="font-size:clamp(1.75rem,4.4vw,3.1rem);text-wrap:balance">Chase or defend? Three captains compared.</h1>
+    <p class="lead muted mt-5">A statistical comparison of <b style="color:var(--dh)">MS Dhoni</b>, <b style="color:var(--ko)">Virat Kohli</b> and <b style="color:var(--ro)">Rohit Sharma</b>: how often each won while chasing a target and while setting one.</p>
+    <div class="glass mt-8" id="tl" style="padding:1.1rem 1.4rem">
+      <div class="flex justify-between text-sm muted"><span>Captaincy tenures</span><span>2007 to 2025</span></div>
+      <div id="tl-rows"></div>
+    </div>
+    <div id="hero-cards" class="cards mt-6"></div>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 80" preserveAspectRatio="none"><path fill="#fff" d="M0 80V40C240 0 480 0 720 30s480 40 720 0v50z"/></svg>
+</header>
+
+<!-- WHITE: matrix -->
+<section id="matrix" class="sec" style="padding-top:2rem">
+  <div class="wrap">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
+      <div>
+        <h2 class="h2">Master captaincy matrix</h2>
+        <p class="muted lead mt-3">Wins and losses for every captain, split by format and by whether the team batted first (defending) or second (chasing).</p>
+      </div>
+      <div class="tabs" role="group" aria-label="Filter by format" id="tabs"></div>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>Captain</th><th>Format</th><th>Condition</th><th>Matches</th><th>Wins</th><th>Win %</th><th>Losses</th><th>Loss %</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+    <p class="muted text-sm mt-4">Win % and loss % do not add to 100: the rest are draws (Tests), ties or no-results. IPL is excluded.</p>
+  </div>
+</section>
+
+<svg class="wave" viewBox="0 0 1440 80" preserveAspectRatio="none" style="margin-bottom:-1px"><path fill="#0d1326" d="M0 0v30c240 40 480 50 720 20S1200-10 1440 30V0z" transform="scale(1,-1) translate(0,-80)"/></svg>
+
+<!-- DARK: charts -->
+<section id="charts" class="dark sec" style="padding-top:2rem">
+  <div class="wrap">
+    <h2 class="h2">From chasing to defending</h2>
+    <p class="muted lead mt-3">Dhoni won more by chasing. Kohli was balanced. Rohit won most when India batted first.</p>
+
+    <div class="grid lg:grid-cols-12 gap-6 mt-10">
+      <div class="dpanel lg:col-span-7"><div class="chart"><canvas id="c1"></canvas></div></div>
+      <div class="lg:col-span-5 grid gap-4" id="insights"></div>
+    </div>
+
+    <div class="cards mt-6" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))">
+      <div class="dpanel">
+        <h3 class="text-xl font-bold">White-ball win rates</h3>
+        <p class="muted text-sm mb-4">ODIs and T20Is, defending vs chasing</p>
+        <div class="chart"><canvas id="c2"></canvas></div>
+        <p class="muted mt-4 text-base">Rohit won 27 of 33 T20Is when defending (81.82%) on the way to the 2024 T20 World Cup.</p>
+      </div>
+      <div class="dpanel">
+        <h3 class="text-xl font-bold">Test outcomes</h3>
+        <p class="muted text-sm mb-4">Batting first vs batting second</p>
+        <div class="chart"><canvas id="c3"></canvas></div>
+        <p class="muted mt-4 text-base">Kohli won 29 of 43 Tests when batting first (67.44%), including series wins in Australia.</p>
+      </div>
+    </div>
+
+    <div class="dpanel mt-6 grid lg:grid-cols-12 gap-6 items-center">
+      <div class="lg:col-span-5">
+        <h3 class="text-2xl font-bold">Overall footprint</h3>
+        <p class="muted mt-2">Six normalized measures. Higher is better; 100 on silverware means a full set of ICC titles in the sample.</p>
+        <div class="grid grid-cols-3 gap-3 mt-5 text-center">
+          <div class="glass" style="padding:.8rem"><b style="color:var(--dh)">Dhoni</b><br><span class="muted text-sm">3 ICC trophies</span></div>
+          <div class="glass" style="padding:.8rem"><b style="color:var(--ko)">Kohli</b><br><span class="muted text-sm">40 Test wins</span></div>
+          <div class="glass" style="padding:.8rem"><b style="color:var(--ro)">Rohit</b><br><span class="muted text-sm">72.5% win rate</span></div>
+        </div>
+      </div>
+      <div class="lg:col-span-7 chart" style="height:clamp(300px,45vw,400px)"><canvas id="c4"></canvas></div>
+    </div>
+  </div>
+</section>
+<svg class="wave" viewBox="0 0 1440 80" preserveAspectRatio="none" style="margin-top:-1px"><path fill="#0d1326" d="M0 0h1440v30C1200 70 960 80 720 50S240 0 0 40z"/></svg>
+
+<!-- WHITE: tactics -->
+<section id="tactics" class="sec" style="padding-top:2rem">
+  <div class="wrap">
+    <h2 class="h2">How each captain played it</h2>
+    <p class="muted lead mt-3">Team selection, bowling plans and risk-taking changed across two decades.</p>
+    <div id="era-cards" class="cards mt-8"></div>
+
+    <h3 class="h2 mt-16" style="font-size:clamp(1.5rem,3vw,2.2rem)">Conditions that shaped the tactics</h3>
+    <div class="cards mt-6" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))">
+      <div class="panel"><h4 class="font-bold mb-1">Night dew</h4><p class="muted">Wet balls are hard for spinners to grip. Dhoni preferred chasing under dew; Rohit set high first-innings totals instead.</p></div>
+      <div class="panel" style="background:var(--ink);color:#e8ecf7"><h4 class="font-bold mb-1">Pace and pitches</h4><p style="color:#a9b3cc">Dhoni leaned on spin at home. Kohli and Rohit built seam attacks that could take 20 wickets anywhere.</p></div>
+      <div class="panel"><h4 class="font-bold mb-1">Rising par scores</h4><p class="muted">250 was defendable in Dhoni's ODIs. Modern par is past 320, so Rohit pushed the early run rate higher.</p></div>
+      <div class="panel"><h4 class="font-bold mb-1">Knockout games</h4><p class="muted">Dhoni won 3 ICC trophies with calm finishes. Rohit paired a 72.52% overall win rate with the 2024 T20 World Cup.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DARK footer -->
+<footer class="dark" style="padding:2rem 0">
+  <div class="wrap text-center muted text-sm"><b class="text-white">Indian international captaincy archives</b><br>Tests, ODIs and T20Is only. IPL statistics are excluded.</div>
+</footer>
+
+<script>
+const C={dh:'#f5a524',ko:'#ff5a5f',ro:'#1fc79a'};
+const caps=[
+ {n:'MS Dhoni',k:'dh',yrs:'2007–2016',m:332,badge:'3 ICC trophies',tag:'Spin choke and deep chases',ch:[98,170],df:[80,162]},
+ {n:'Virat Kohli',k:'ko',yrs:'2014–2022',m:213,badge:'40 Test wins',tag:'Pace battery and red-ball aggression',ch:[66,105],df:[69,108]},
+ {n:'Rohit Sharma',k:'ro',yrs:'2017–2025',m:131,badge:'2024 T20 World Cup',tag:'Powerplay attack and target defense',ch:[43,63],df:[52,68]}];
+const pct=(a,b)=>(a/b*100).toFixed(2);
+
+// hero cards
+document.getElementById('hero-cards').innerHTML=caps.map(c=>`
+<article class="glass">
+  <div class="flex justify-between items-start gap-2">
+    <div><span class="chip" style="background:${C[c.k]}22;color:${C[c.k]}">${c.yrs}</span><br><span class="chip" style="margin-top:.4rem;background:rgba(31,199,154,.15);color:#3be0b4">✓ Completed</span></div>
+    <span class="disp text-3xl font-extrabold">${c.m}<span class="text-sm font-normal muted"> matches</span></span>
+  </div>
+  <h3 class="text-2xl font-bold mt-4">${c.n}</h3>
+  <p class="muted text-base">${c.tag}</p>
+  <span class="chip mt-3" style="background:${C[c.k]};color:#0d1326">${c.badge}</span>
+  ${[['Chasing',c.ch],['Defending',c.df]].map(([l,v])=>`
+  <div class="mt-5"><div class="flex justify-between text-base"><span>${l} <span class="muted">(${v[0]}/${v[1]})</span></span><b>${pct(...v)}%</b></div>
+  <div class="track mt-1"><div class="fill" data-w="${pct(...v)}" style="background:${C[c.k]};${l=='Chasing'?'opacity:.6':''}"></div></div></div>`).join('')}
+</article>`).join('');
+
+// animate bars once when visible
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.fill').forEach(f=>f.style.width=f.dataset.w+'%');io.unobserve(e.target)}}),{threshold:.25});
+io.observe(document.getElementById('hero-cards'));
+const tl=[['Dhoni','dh',2007,2017],['Kohli','ko',2014,2023],['Rohit','ro',2017,2026]];
+document.getElementById('tl-rows').innerHTML=tl.map(t=>`<div class="tlr"><b style="color:${C[t[1]]}">${t[0]}</b><div class="track tlt"><div class="fill" style="position:absolute;left:${(t[2]-2007)/19*100}%;background:${C[t[1]]}" data-w="${(t[3]-t[2])/19*100}"></div></div><span class="ok">✓ Completed</span></div>`).join('');
+io.observe(document.getElementById('tl'));
+
+// navbar: menu, active section, progress
+const burger=document.getElementById('burger'),menu=document.getElementById('menu');
+burger.onclick=()=>{const o=menu.hidden;menu.hidden=!o;burger.setAttribute('aria-expanded',o);burger.textContent=o?'✕':'☰'};
+menu.onclick=e=>{if(e.target.tagName=='A'){menu.hidden=true;burger.setAttribute('aria-expanded',false);burger.textContent='☰'}};
+const spy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)document.querySelectorAll('nav a[data-s]').forEach(a=>a.classList.toggle('on',a.dataset.s==e.target.id))}),{rootMargin:'-40% 0px -55% 0px'});
+['eras','matrix','charts','tactics'].forEach(id=>spy.observe(document.getElementById(id)));
+const prog=document.getElementById('prog');
+addEventListener('scroll',()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
+
+// matrix
+const D=[['MS Dhoni','All formats','D',162,80,66],['MS Dhoni','All formats','C',170,98,54],['MS Dhoni','Tests','D',32,13,10],['MS Dhoni','Tests','C',28,14,8],['MS Dhoni','ODIs','D',96,47,43],['MS Dhoni','ODIs','C',104,63,31],['MS Dhoni','T20Is','D',34,20,13],['MS Dhoni','T20Is','C',38,21,15],
+['Virat Kohli','All formats','D',108,69,30],['Virat Kohli','All formats','C',105,66,30],['Virat Kohli','Tests','D',43,29,8],['Virat Kohli','Tests','C',25,11,9],['Virat Kohli','ODIs','D',42,27,14],['Virat Kohli','ODIs','C',53,38,13],['Virat Kohli','T20Is','D',23,13,8],['Virat Kohli','T20Is','C',27,17,8],
+['Rohit Sharma','All formats','D',68,52,13],['Rohit Sharma','All formats','C',63,43,18],['Rohit Sharma','Tests','D',11,7,3],['Rohit Sharma','Tests','C',10,5,4],['Rohit Sharma','ODIs','D',24,18,5],['Rohit Sharma','ODIs','C',24,16,7],['Rohit Sharma','T20Is','D',33,27,5],['Rohit Sharma','T20Is','C',29,22,7]];
+const key=n=>caps.find(c=>c.n==n).k;
+const fmts=['All formats','Tests','ODIs','T20Is'];
+function render(f){
+  document.getElementById('rows').innerHTML=D.filter(r=>r[1]==f).map(r=>`<tr>
+  <td><span class="pill"><span class="dot" style="background:${C[key(r[0])]}"></span>${r[0]}</span></td>
+  <td>${r[1]}</td><td>${r[2]=='D'?'Defending (batting 1st)':'Chasing (batting 2nd)'}</td>
+  <td>${r[3]}</td><td><b style="color:#0b7a5c">${r[4]}</b></td><td><b>${pct(r[4],r[3])}%</b></td>
+  <td><b style="color:#c0262d">${r[5]}</b></td><td>${pct(r[5],r[3])}%</td></tr>`).join('');
+  document.querySelectorAll('#tabs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.f==f));
+}
+document.getElementById('tabs').innerHTML=fmts.map(f=>`<button data-f="${f}">${f}</button>`).join('');
+document.getElementById('tabs').onclick=e=>{if(e.target.dataset.f)render(e.target.dataset.f)};
+render('All formats');
+
+// insights
+const ins=[['dh','MS Dhoni','2007–2016','A 57.65% chase win rate from steering games into the final overs. Defending was harder at 49.38% on turning tracks.'],
+['ko','Virat Kohli','2014–2022','Even results: 63.89% defending and 62.86% chasing, backed by a fast-bowling unit that travelled well.'],
+['ro','Rohit Sharma','2017–2025','Big powerplays set totals that held up: 76.47% when defending across all formats.']];
+document.getElementById('insights').innerHTML=ins.map(i=>`<div class="glass" style="border-left:5px solid ${C[i[0]]}"><div class="flex justify-between"><b>${i[1]}</b><span class="muted text-sm">${i[2]}</span></div><p class="muted mt-1 text-base">${i[3]}</p></div>`).join('');
+
+// eras
+const eras=[['dh','MS Dhoni','2007–2016','Spin choke and calculated chases',[['Finishing','Controlled boundary risk; pushed chases deep to use opponent pressure.'],['Bowling core','Finger spinners (Harbhajan, Ashwin, Jadeja) squeezed runs on dry pitches.'],['ICC titles','2007 T20 World Cup, 2011 World Cup, 2013 Champions Trophy.']],'ODI chasing win rate: 60.58%'],
+['ko','Virat Kohli','2014–2022','Fast bowling and Test dominance',[['Pace attack','Bumrah, Shami, Ishant and Siraj took 20 wickets in any country.'],['Fitness','High standards and sharp running reduced reliance on big hits in chases.'],['Test standard','40 wins (60%), and India stayed No. 1 in Tests for five straight years.']],'Test defending win rate: 67.44%'],
+['ro','Rohit Sharma','2017–2025','Powerplay attack and matchups',[['Early aggression','Fearless powerplays built big totals and blunted dew.'],['Matchups','Data-guided bowling changes aimed at when and how opponents entered.'],['Peak win rate','Best overall win rate (72.52%) plus the 2024 T20 World Cup.']],'T20I defending win rate: 81.82%']];
+document.getElementById('era-cards').innerHTML=eras.map(e=>`<article class="era" style="border-top-color:${C[e[0]]}">
+ <div><div class="flex justify-between items-center"><b>${e[1]}</b><span class="muted text-sm">${e[2]}</span></div>
+ <h3 class="text-2xl font-bold mt-3 mb-4">${e[3]}</h3>
+ <ul style="list-style:none;padding:0;margin:0">${e[4].map(b=>`<li class="fact" style="border-left-color:${C[e[0]]}"><b>${b[0]}.</b> ${b[1]}</li>`).join('')}</ul></div>
+ <div class="chip" style="background:${C[e[0]]}22;color:#1b2238;text-align:center;border-radius:1rem;padding:.6rem">${e[5]}</div></article>`).join('');
+
+// charts
+Chart.defaults.font.family="'DM Sans',sans-serif";Chart.defaults.font.size=13;Chart.defaults.color='#b6bfd6';
+Chart.defaults.animation.duration=matchMedia('(prefers-reduced-motion:reduce)').matches?0:1100;
+const grid={color:'rgba(255,255,255,.08)'},base={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{boxWidth:12,usePointStyle:true}}}};
+const yp={beginAtZero:true,max:100,grid,ticks:{callback:v=>v+'%'}};
+new Chart(c1,{type:'bar',data:{labels:caps.map(c=>c.n),datasets:[
+ {label:'Defending win %',data:[49.38,63.89,76.47],backgroundColor:'#60a5fa',borderRadius:8},
+ {label:'Chasing win %',data:[57.65,62.86,68.25],backgroundColor:'#a78bfa',borderRadius:8}]},options:{...base,scales:{y:yp,x:{grid:{display:false}}}}});
+const wl=['Dhoni','Kohli','Rohit'];const cols=[C.dh,C.ko,C.ro];
+new Chart(c2,{type:'bar',data:{labels:['ODI defend','ODI chase','T20I defend','T20I chase'],datasets:wl.map((n,i)=>({label:n,backgroundColor:cols[i],borderRadius:6,
+ data:[[48.96,60.58,58.82,55.26],[64.29,71.70,56.52,62.96],[75.00,66.67,81.82,75.86]][i]}))},options:{...base,scales:{y:yp,x:{grid:{display:false}}}}});
+new Chart(c3,{type:'bar',data:{labels:['Dhoni 1st','Dhoni 2nd','Kohli 1st','Kohli 2nd','Rohit 1st','Rohit 2nd'],datasets:[
+ {label:'Wins',data:[13,14,29,11,7,5],backgroundColor:'#2dd4a7'},{label:'Losses',data:[10,8,8,9,3,4],backgroundColor:'#ff6b70'},{label:'Draws / other',data:[9,6,6,5,1,1],backgroundColor:'#7d88a6'}]},
+ options:{...base,scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,beginAtZero:true,grid}}}});
+new Chart(c4,{type:'radar',data:{labels:['Overall win','Defending win','Chasing win','Test dominance','White-ball','ICC silverware'],datasets:[
+ [ 'MS Dhoni',C.dh,[53.6,49.4,57.7,45,58,100]],['Virat Kohli',C.ko,[63.4,63.9,62.9,85,68,40]],['Rohit Sharma',C.ro,[72.5,76.5,68.3,60,82,80]]].map(d=>({label:d[0],data:d[2],borderColor:d[1],backgroundColor:d[1]+'33',pointBackgroundColor:d[1]}))},
+ options:{...base,plugins:{legend:{position:'bottom',labels:{usePointStyle:true}}},scales:{r:{suggestedMin:0,suggestedMax:100,angleLines:{color:'rgba(255,255,255,.12)'},grid:{color:'rgba(255,255,255,.12)'},pointLabels:{color:'#e8ecf7',font:{size:13,weight:'700'}},ticks:{display:false}}}}});
+</script>
+</body>
+</html>
